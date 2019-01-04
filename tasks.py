@@ -17,9 +17,9 @@ stdlog.info("Started agent building daemon")
 
 @build_app.task(name="agent.build")
 def build_agent(platform, arch, base_url, build_id):
-    stdlog.info("Building: %s-%s %s") %(platform, arch, base_url)
-    set_env_platform = os.environ["GOOS"] = platform
-    set_env_arch = os.environ["GOARCH"] = arch
+    stdlog.info("Building: %s-%s %s" %(platform, arch, base_url)) 
+    os.environ["GOOS"] = platform
+    os.environ["GOARCH"] = arch
     escaped_url = shlex.quote(base_url)
 
     custom_build_url = '-X main.base_url=%s' %(escaped_url)
@@ -31,12 +31,12 @@ def build_agent(platform, arch, base_url, build_id):
         build_output = subprocess.check_output(["go", "build", "-ldflags", custom_build_url, "-o", build_path, src_code])
         build_data = open(build_path, "rb").read() 
         build_encoded = base64.b64encode(build_data).decode('utf-8')
-        stdlog.info("Finished building: %s-%s %s") %(platform, arch, base_url)
+        stdlog.info("Finished building: %s-%s %s" %(platform, arch, base_url)) 
         result = {"result":"success", "data":"Succesfully built agent", "file":build_encoded}
 
 
     except Exception as err:
-        stdlog.info("Failed to build: %s-%s %s") %(platform, arch, base_url)
+        stdlog.info("Failed to build: %s-%s %s" %(platform, arch, base_url)) 
         result = {"result":"failed", "data":"Unable to run subprocess"}
 
     return result

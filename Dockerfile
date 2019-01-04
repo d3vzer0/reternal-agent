@@ -11,10 +11,10 @@ ENV GO_SRC="${GO_SRC}"
 ARG GO_DST=/reternal-agent/agent/dist
 ENV GO_DST="${GO_DST}"
 
-ARG CELERY_BACKEND=redis://redis_service:6379
+ARG CELERY_BACKEND=redis://redis-service:6379
 ENV CELERY_BACKEND="${CELERY_BACKEND}"
 
-ARG CELERY_BROKER=redis://redis_service:6379
+ARG CELERY_BROKER=redis://redis-service:6379
 ENV CELERY_BROKER="${CELERY_BROKER}"
 
 COPY . /reternal-agent
