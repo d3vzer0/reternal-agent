@@ -5,30 +5,26 @@ from logger import stdlog
 
 import os
 import shlex
-import hashlib
 import json
 import subprocess
 import base64
 
-app = Celery('reternal-agent', broker=config['celery']['broker'], backend=config['celery']['results'])
-app.conf.task_routes = config['celery']['routes']
-app.conf.broker_transport_options = {'fanout_prefix': True}
-app.conf.broker_transport_options = {'fanout_patterns': True}
+build_app = Celery('reternal-agent', broker=config['celery']['broker'], backend=config['celery']['results'])
+build_app.conf.task_routes = config['celery']['routes']
+build_app.conf.broker_transport_options = {'fanout_prefix': True}
+build_app.conf.broker_transport_options = {'fanout_patterns': True}
 stdlog.info("Started agent building daemon")
 
-@app.task(name="agent.build")
-def build_agent(platform, arch, base_url):
+@build_app.task(name="agent.build")
+def build_agent(platform, arch, base_url, build_id):
     stdlog.info("Building: %s-%s %s") %(platform, arch, base_url)
     set_env_platform = os.environ["GOOS"] = platform
     set_env_arch = os.environ["GOARCH"] = arch
     escaped_url = shlex.quote(base_url)
 
     custom_build_url = '-X main.base_url=%s' %(escaped_url)
-    combined_id = "%s%s%s" %(platform,arch,base_url)
-    hashed_id = hashlib.sha1(combined_id.encode('utf-8')).hexdigest()
-    hashed_id += ".exe" if platform == "windows" else ""
-
-    build_path = "%s/%s" %(config["golang"]["dst"], hashed_id)
+    build_id += ".exe" if platform == "windows" else ""
+    build_path = "%s/%s" %(config["golang"]["dst"], build_id)
     src_code = "%s/corebeacon.go" %(config["golang"]["src"])
 
     try:
@@ -40,6 +36,7 @@ def build_agent(platform, arch, base_url):
 
 
     except Exception as err:
+        stdlog.info("Failed to build: %s-%s %s") %(platform, arch, base_url)
         result = {"result":"failed", "data":"Unable to run subprocess"}
 
     return result
