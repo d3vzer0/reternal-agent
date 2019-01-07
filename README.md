@@ -1,7 +1,7 @@
 #  RE:TERNAL
 -------------
 
-<img src="reternal.png" alt="Drawing" style="width: 300px;"/>
+<img src="https://i.postimg.cc/7hwhx4Dp/reternal.png" alt="Drawing" style="width: 300px;"/>
 
 ![Go](https://img.shields.io/badge/Go-1.11.4-green.svg)
 ![Python](https://img.shields.io/badge/Python-3.6-green.svg)
