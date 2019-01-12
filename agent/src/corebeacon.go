@@ -53,6 +53,8 @@ var function_mapping = map[string]func(string) string{
 	"exec_shell":      Modules.ExecShell,
 	"get_ifaces":      Modules.GetIfaces,
 	"make_screenshot": Modules.MakeScreenshot,
+	"download_remote": Modules.DownloadRemote,
+	"read_file":       Modules.ReadFile,
 }
 
 func main() {
