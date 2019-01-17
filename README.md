@@ -13,13 +13,16 @@ RE:TERNAL is a centralised purple team simulation platform. Reternal uses agents
 red-teaming techniques in order to test blue-teaming capabilities. The simulations are mapped to the MITRE ATT&CK framework. This repo contains the agent code (written in Golang)
 and Celery task to build and download the compiled agent via the payload API. Since the project is still in development, please do not run this in production or on an exposed interface yet.
 
-
 #### Reternal components
 - **API:** https://github.com/d3vzer0/reternal-backend.git
 - **UI:** https://github.com/d3vzer0/reternal-ui.git
 - **Agent:** https://github.com/d3vzer0/reternal-agent.git
+- **C2:** https://github.com/d3vzer0/reternal-c2.git
 - **Quickstart:** https://github.com/d3vzer0/reternal-quickstart.git
 - **Mitre/Command Mapping:** https://github.com/d3vzer0/reternal-mitre.git
+
+<img src="https://i.postimg.cc/15nGCgws/Untitled-Diagram-3.png" alt="Drawing" style="width: 600px;"/>
+
 
 #### Component installation
 Reternal components are primarily aimed to be run as docker containers since the component configuration depends on environment variables set by docker-compose or the dockerfile. A docker-compose with all the default options can be found on the reternal-quickstart repository. If you don't want to run the service within containers, adjust the config.py files with your own custom values.
