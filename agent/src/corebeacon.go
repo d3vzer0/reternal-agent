@@ -32,8 +32,8 @@ type Command struct {
 	Sleep int    `json:"sleep"`
 }
 
-// Define Base URL
-var base_url = "http://localhost:5000/api/v1/ping"
+// Define Base URL (default localhost 9000)
+var base_url = "http://localhost:9000/api/v1/ping"
 
 // Get details from userspace
 var user_object, user_error = user.Current()
