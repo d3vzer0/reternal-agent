@@ -1,3 +1,3 @@
-amqp==2.1.4
+amqp
 celery
-redis==2.10.6
+redis
