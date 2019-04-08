@@ -27,20 +27,21 @@ class InvalidPlatform(Exception):
 
 @build_app.task(name="agent.build")
 def build_agent(platform, arch, base_url, build_id):
-    if platform not in supported_platforms or \
-        arch not in supported_platforms[platform]: raise InvalidPlatform('Unsupported platform')
-
-    stdlog.info('Building: {0}-{1} {2}'.format(platform, arch, base_url)) 
-    os.environ['GOOS'] = shlex.quote(platform)
-    os.environ['GOARCH'] = shlex.quote(arch)
-    custom_build_url = '-X main.base_url={0}'.format(shlex.quote(base_url))
-    build_path = '{0}/{1}'.format(config['golang']['dst'],
-        hashlib.md5('{0}-{1}'.format(platform, arch).encode()).hexdigest())
-    src_code = '{0}/corebeacon.go'.format(config['golang']['src'])
-
     try:
+        if platform not in supported_platforms or \
+            arch not in supported_platforms[platform]: raise InvalidPlatform('Unsupported platform')
+
+        stdlog.info('Building: {0}-{1} {2}'.format(platform, arch, base_url)) 
+        os.environ['GOOS'] = shlex.quote(platform)
+        os.environ['GOARCH'] = shlex.quote(arch)
+        custom_build_url = '-X main.base_url={0}'.format(shlex.quote(base_url))
+        build_path = '{0}/{1}'.format(config['golang']['dst'],
+            hashlib.md5('{0}-{1}'.format(platform, arch).encode()).hexdigest())
+        src_code = '{0}/corebeacon.go'.format(config['golang']['src'])
+
         build_output = subprocess.check_output(['go', 'build', '-ldflags',
             custom_build_url,'-o', build_path, src_code])
+
         with open(build_path, 'rb') as build_file:
             build_data = build_file.read()
             build_encoded = base64.b64encode(build_data).decode('utf-8')
