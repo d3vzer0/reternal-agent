@@ -33,7 +33,9 @@ type Command struct {
 }
 
 // Define Base URL (default localhost 9000)
+var autodiscover = true
 var base_url = "http://localhost:9000/api/v1/ping"
+var relay_for []string
 
 // Get details from userspace
 var user_object, user_error = user.Current()
@@ -46,7 +48,7 @@ var beacon_platform = runtime.GOOS
 var beacon_id = ""
 
 // Default timeout for beacon
-var beacon_timer int = 20
+var beacon_timer int = 5
 var exit_process = false
 
 // Map variable functions to map, used to call function by string-based variable

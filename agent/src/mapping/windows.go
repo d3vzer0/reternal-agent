@@ -13,6 +13,7 @@ func FunctionMapping() map[string]func(string) string {
 		"download_remote": Modules.DownloadRemote,
 		"read_file":       Modules.ReadFile,
 		"make_screenshot": Modules.MakeScreenshot,
+		"mdns_service":    Modules.MDNSService,
 	}
 
 	return function_mapping

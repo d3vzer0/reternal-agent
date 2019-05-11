@@ -1,11 +1,12 @@
 FROM golang:1.11.4-stretch
 
 RUN go get github.com/denisbrodbeck/machineid/cmd/machineid
-RUN go get golang.org/x/sys/windows/registry
 RUN go get github.com/kbinani/screenshot
 RUN GOOS="linux" go get github.com/BurntSushi/xgbutil
 RUN GOOS="linux" go get github.com/gen2brain/shm
 RUN GOOS="windows" go get github.com/lxn/walk
+RUN GOOS="windows" go get golang.org/x/sys/windows/registry
+
 RUN apt-get update && apt-get -y upgrade && apt-get -y install python3-pip
 
 COPY requirements.txt .
