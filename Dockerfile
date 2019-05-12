@@ -2,6 +2,8 @@ FROM golang:1.11.4-stretch
 
 RUN go get github.com/denisbrodbeck/machineid/cmd/machineid
 RUN go get github.com/kbinani/screenshot
+RUN go get github.com/grandcat/zeroconf
+
 RUN GOOS="linux" go get github.com/BurntSushi/xgbutil
 RUN GOOS="linux" go get github.com/gen2brain/shm
 RUN GOOS="windows" go get github.com/lxn/walk

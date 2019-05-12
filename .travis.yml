@@ -9,5 +9,8 @@ install:
   - docker build -t reternal-agent .
   - docker run -d --name reternal-agent reternal-agent
 
+before_script:
+  - sleep 10
+
 script:
   - docker ps | grep -q reternal-agent
