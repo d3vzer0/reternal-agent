@@ -1,4 +1,4 @@
-FROM golang:1.11.4-stretch
+FROM golang:1.12.5-stretch
 
 RUN go get github.com/denisbrodbeck/machineid/cmd/machineid
 RUN go get github.com/kbinani/screenshot
