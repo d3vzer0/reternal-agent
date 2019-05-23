@@ -11,7 +11,6 @@ import (
 	"encoding/pem"
 	"fmt"
 	"io"
-	"os"
 )
 
 func EncodeMessage(message []byte, public_key_string string) ([]byte, string) {
@@ -20,7 +19,6 @@ func EncodeMessage(message []byte, public_key_string string) ([]byte, string) {
 	public_key_object, err := x509.ParsePKIXPublicKey(public_key_block.Bytes)
 	if err != nil {
 		fmt.Println(err)
-		os.Exit(1)
 	}
 	public_key_rsa := public_key_object.(*rsa.PublicKey)
 

